@@ -1,0 +1,78 @@
+---
+- hosts: docker
+  connection: local
+  tasks:
+
+  - name: execute the kerberos script
+    command: "{{ item }}"
+    with_items:
+       - "/home/cloudera/kerberos"
+       - "/etc/init.d/mysqld start"
+       - "/etc/init.d/cloudera-quickstart-init"
+       - "/home/cloudera/cloudera-manager --express"
+
+  - name: Disable CM Clock offset warning
+    uri:
+      url: 'http://localhost:7180/api/v6/batch'
+      method: POST
+      user: cloudera
+      password: cloudera
+      body: '{"items":[{"method":"PUT","url":"/api/v8/cm/allHosts/config?message=Updated%20all%20hosts%20configurations.","body":{"items":[{"name":"host_clock_offset_thresholds","value":"{\"warning\":\"never\",\"critical\":\"never\"}"}]},"contentType":"application/json"}]}'
+      HEADER_Content-Type: "application/json"
+
+  - name: CM Kerberos Wizard (1)
+    uri:
+      url: 'http://localhost:7180/api/v6/batch'
+      method: POST
+      user: cloudera
+      password: cloudera
+      body: '{"items":[{"method":"PUT","url":"/api/v8/cm/config","body":{"items":[{"name":"kdc_host","value":"quickstart.cloudera"},{"name":"security_realm","value":"CLOUDERA"}]},"contentType":"application/json"}]}'
+      HEADER_Content-Type: "application/json"
+
+
+  - name: CM Kerberos Wizard (2)
+    uri:
+      url: 'http://localhost:7180/api/v6/batch'
+      method: POST
+      user: cloudera
+      password: cloudera
+      body: '{"items":[{"method":"PUT","url":"/api/v8/cm/config","body":{"items":[{"name":"krb_manage_krb5_conf","value":"true"}]},"contentType":"application/json"}]}'
+      HEADER_Content-Type: "application/json"
+
+
+  - name: Generate Admin credentials
+    uri:
+      url: 'http://localhost:7180/api/v12/cm/commands/importAdminCredentials?username=cloudera-scm/admin@CLOUDERA&password=cloudera'
+      method: POST
+      user: cloudera
+      password: cloudera
+      HEADER_Content-Type: "application/json"
+
+  - name: Generate Missing credentials
+    uri:
+      url: 'http://localhost:7180/api/v10/cm/commands/generateCredentials'
+      method: POST
+      user: cloudera
+      password: cloudera
+      HEADER_Content-Type: "application/json"
+
+  - name: CM Kerberos Wizard API Call
+    uri:
+      url: 'http://localhost:7180/api/v12/clusters/Cloudera%20QuickStart/commands/configureForKerberos'
+      method: POST
+      user: cloudera
+      password: cloudera
+      body: '{}'
+      HEADER_Content-Type: "application/json"
+
+  - name: Pause for 5 seconds
+    pause: seconds=5
+
+  - name: Start CM services
+    uri:
+      url: 'http://localhost:7180/api/v12/clusters/Cloudera%20QuickStart/commands/start'
+      method: POST
+      user: cloudera
+      password: cloudera
+
+
