@@ -1,2 +1,0 @@
-[docker]
-quickstart.cloudera ansible_connection=docker
