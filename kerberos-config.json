@@ -1,0 +1,9 @@
+{
+  "cluster_name": "Cloudera Quickstart",
+  "cm_host": "localhost",
+  "kb_realm": "CLOUDERA",
+  "kdc_master": "localhost",
+  "kdc_admin_user": "cloudera-scm/admin@CLOUDERA",
+  "kdc_pass": "cloudera",
+  "dr_kdc_master": "my_backup_kdc"
+}
