@@ -26,7 +26,6 @@ EXPOSE 60030:60030
 
 
 ADD contents/configure-kerberos.py /home/cloudera
-ADD contents/create-quickstart-kerberos.sh /home/cloudera
 ADD contents/express-deployment.json /home/cloudera
 ADD contents/kafka /etc/init.d
 ADD contents/kerberos-config.json /home/cloudera
