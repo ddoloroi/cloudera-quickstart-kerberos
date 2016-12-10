@@ -24,7 +24,6 @@ EXPOSE 60010:60010
 # HBase Region
 EXPOSE 60030:60030
 
-
 ADD contents/configure-kerberos.py /home/cloudera
 ADD contents/express-deployment.json /home/cloudera
 ADD contents/kafka /etc/init.d
@@ -33,13 +32,14 @@ ADD contents/opentsdb-tables /etc/init.d
 ADD contents/quickstart-kerberos.sh /home/cloudera
 ADD contents/start-services.py /home/cloudera
 
-#/usr/share/cmf/schema/scm_prepare_database.sh
 RUN touch /var/lib/cloudera-quickstart/.cloudera-manager
 RUN touch /var/tmp/cm_api.log
 RUN chmod +rw /var/tmp/cm_api.log
-RUN yum localinstall -y https://github.com/OpenTSDB/opentsdb/releases/download/v2.3.0RC2/opentsdb-2.3.0_RC2.rpm
-RUN yum localinstall -y ftp://195.220.108.108/linux/sourceforge/s/sc/schedulerbox/tmp/scala_dependencies/kafka-manager-1.3.1.6-1.noarch.rpm
-RUN yum install -y python-pip wget rpm-build spectool java-1.8.0-openjdk-devel mysql-connector-java; exit 0
+
+RUN yum localinstall -y https://github.com/OpenTSDB/opentsdb/releases/download/v2.3.0RC2/opentsdb-2.3.0_RC2.rpm || true
+RUN yum localinstall -y ftp://195.220.108.108/linux/sourceforge/s/sc/schedulerbox/tmp/scala_dependencies/kafka-manager-1.3.1.6-1.noarch.rpm || true
+RUN yum install -y python-pip wget rpm-build spectool java-1.8.0-openjdk-devel mysql-connector-java || true
+
 RUN wget http://apache.40b.nl/kafka/0.10.0.1/kafka_2.11-0.10.0.1.tgz -O /opt/kafka_2.11-0.10.0.1.tgz
 RUN tar -zxvf /opt/kafka_2.11-0.10.0.1.tgz -C /opt
 RUN ln -s /opt/kafka_2.11-0.10.0.1 /opt/kafka
