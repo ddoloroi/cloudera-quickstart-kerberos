@@ -1,17 +1,29 @@
 FROM cloudera/quickstart
 MAINTAINER cheelio@gmail.com
 
-EXPOSE 2181:2181    # Zookeeper
-EXPOSE 4242:4242    # OpenTSDB
-EXPOSE 7180:7180    # Cloudera Manager
-EXPOSE 8088:8088    # Hadoop
-EXPOSE 9092:9092    # Kafka
-EXPOSE 9099:9099    # Kafka Manager
-EXPOSE 18088:18088  # Spark History
-EXPOSE 19888:19888  # Hadoop History
-EXPOSE 50070:50070  # Impala
-EXPOSE 60010:60010  # HBase Master
-EXPOSE 60030:60030  # HBase Region
+# Zookeeper
+EXPOSE 2181:2181
+# OpenTSDB
+EXPOSE 4242:4242
+# Cloudera Manager
+EXPOSE 7180:7180
+# Hadoop
+EXPOSE 8088:8088
+# Kafka
+EXPOSE 9092:9092
+# Kafka Manager
+EXPOSE 9099:9099
+# Spark History
+EXPOSE 18088:18088
+# Hadoop History
+EXPOSE 19888:19888
+# Impala
+EXPOSE 50070:50070
+# HBase Master
+EXPOSE 60010:60010
+# HBase Region
+EXPOSE 60030:60030
+
 
 ADD contents/configure-kerberos.py /home/cloudera
 ADD contents/create-quickstart-kerberos.sh /home/cloudera
