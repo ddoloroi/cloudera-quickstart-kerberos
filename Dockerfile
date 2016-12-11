@@ -38,7 +38,7 @@ RUN chmod +rw /var/tmp/cm_api.log
 
 RUN yum localinstall -y https://github.com/OpenTSDB/opentsdb/releases/download/v2.3.0RC2/opentsdb-2.3.0_RC2.rpm || true
 RUN yum localinstall -y ftp://195.220.108.108/linux/sourceforge/s/sc/schedulerbox/tmp/scala_dependencies/kafka-manager-1.3.1.6-1.noarch.rpm || true
-RUN yum install -y python-pip wget rpm-build spectool java-1.8.0-openjdk-devel mysql-connector-java || true
+RUN yum install -y python-pip wget rpm-build spectool java-1.8.0-openjdk-devel mysql-connector-java krb5-server krb5-workstation openldap || true
 
 RUN wget http://apache.40b.nl/kafka/0.10.0.1/kafka_2.11-0.10.0.1.tgz -O /opt/kafka_2.11-0.10.0.1.tgz
 RUN tar -zxvf /opt/kafka_2.11-0.10.0.1.tgz -C /opt
